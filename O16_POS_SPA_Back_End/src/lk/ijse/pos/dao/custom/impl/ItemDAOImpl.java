@@ -65,4 +65,9 @@ public class ItemDAOImpl implements ItemDAO {
             return pstm.executeUpdate()>0;
 
     }
+
+    @Override
+    public boolean updateItemQty(int qty, String code) throws SQLException, ClassNotFoundException {
+        return false;
+    }
 }

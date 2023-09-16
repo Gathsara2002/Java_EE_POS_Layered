@@ -1,5 +1,7 @@
 package lk.ijse.pos.servlet;
 
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.PlaceOrderBO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -16,6 +18,8 @@ import java.sql.*;
 
 @WebServlet(urlPatterns = {"/purchase_order"})
 public class PurchaseOrderServlet extends HttpServlet {
+
+    private final PlaceOrderBO placeOrderBO=(PlaceOrderBO)BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PLACE_ORDER);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

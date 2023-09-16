@@ -8,5 +8,9 @@ package lk.ijse.pos.dao.custom;
 import lk.ijse.pos.dao.CrudDAO;
 import lk.ijse.pos.entity.ItemEntity;
 
+import java.sql.SQLException;
+
 public interface ItemDAO extends CrudDAO<ItemEntity> {
+
+    boolean updateItemQty(int qty, String code) throws SQLException, ClassNotFoundException;
 }
