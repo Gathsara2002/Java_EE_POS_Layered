@@ -1,5 +1,8 @@
 package lk.ijse.pos.servlet;
 
+import lk.ijse.pos.bo.custom.ItemBO;
+import lk.ijse.pos.bo.custom.impl.ItemBOImpl;
+import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -12,10 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 @WebServlet(urlPatterns = {"/item"})
 public class ItemServlet extends HttpServlet {
+
+    ItemBO itemBO = new ItemBOImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +31,7 @@ public class ItemServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("select * from Item");
+           /* PreparedStatement pstm = connection.prepareStatement("select * from Item");
             ResultSet rst = pstm.executeQuery();
 
             JsonArrayBuilder allItems = Json.createArrayBuilder();
@@ -42,12 +48,32 @@ public class ItemServlet extends HttpServlet {
                 itemObject.add("unitPrice", unitPrice);
 
                 allItems.add(itemObject.build());
+            }*/
+
+            ArrayList<ItemDTO> items = itemBO.getAllItems(connection);
+
+            JsonArrayBuilder allItems = Json.createArrayBuilder();
+            for (ItemDTO item : items) {
+                String code = item.getCode();
+                String name = item.getName();
+                String qty = item.getQty();
+                String price = item.getPrice();
+
+                JsonObjectBuilder itemObject = Json.createObjectBuilder();
+                itemObject.add("code", code);
+                itemObject.add("description", name);
+                itemObject.add("qty", qty);
+                itemObject.add("unitPrice", price);
+
+                allItems.add(itemObject.build());
             }
-            //create the response Object
+
             resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allItems.build()));
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

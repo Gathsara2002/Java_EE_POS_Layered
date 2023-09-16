@@ -9,12 +9,12 @@ public class ItemDTO {
     String code;
     String name;
     String qty;
-    double price;
+    String price;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(String code, String name, String qty, double price) {
+    public ItemDTO(String code, String name, String qty, String price) {
         this.code = code;
         this.name = name;
         this.qty = qty;
@@ -45,21 +45,11 @@ public class ItemDTO {
         this.qty = qty;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "ItemDTO{" +
-                "code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", qty='" + qty + '\'' +
-                ", price=" + price +
-                '}';
     }
 }
