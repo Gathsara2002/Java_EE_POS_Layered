@@ -107,7 +107,7 @@ public class CustomerServlet extends HttpServlet {
 
             CustomerDTO customerDTO = new CustomerDTO(cusID, cusName, cusAddress, cusSalary);
 
-            boolean isCustomerSaved = customerBO.save(customerDTO, connection);
+            boolean isCustomerSaved = customerBO.saveCustomer(customerDTO, connection);
 
             if (isCustomerSaved) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Successfully Added.!"));
@@ -136,13 +136,16 @@ public class CustomerServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
+           /* PreparedStatement pstm = connection.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
             pstm.setObject(4, cusID);
             pstm.setObject(1, cusName);
             pstm.setObject(2, cusAddress);
-            pstm.setObject(3, salary);
+            pstm.setObject(3, salary); */
 
-            if (pstm.executeUpdate() > 0) {
+            CustomerDTO customerDTO = new CustomerDTO(cusID,cusName,cusAddress,salary);
+
+            boolean isCustomerUpdated = customerBO.updateCustomer(customerDTO,connection);
+            if (isCustomerUpdated) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Customer Updated..!"));
             } else {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer Updated Failed..!"));
@@ -150,9 +153,9 @@ public class CustomerServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-
     }
 
     @Override
