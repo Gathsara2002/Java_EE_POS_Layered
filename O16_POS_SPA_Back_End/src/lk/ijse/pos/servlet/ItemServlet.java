@@ -161,10 +161,12 @@ public class ItemServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
-            pstm.setObject(1, code);
+           /* PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
+            pstm.setObject(1, code);*/
 
-            if (pstm.executeUpdate() > 0) {
+            boolean isItemDeleted = itemBO.deleteItem(code, connection);
+
+            if (isItemDeleted) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Item Deleted..!"));
             } else {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Item Delete Failed..!"));
@@ -172,6 +174,8 @@ public class ItemServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
