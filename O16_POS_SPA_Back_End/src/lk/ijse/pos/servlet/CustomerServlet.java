@@ -1,6 +1,8 @@
 package lk.ijse.pos.servlet;
 
 
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.impl.CustomerBOImpl;
 import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 @WebServlet(urlPatterns = {"/customer"})
 public class CustomerServlet extends HttpServlet {
 
-    CustomerBOImpl customerBO = new CustomerBOImpl();
+    private final CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     public CustomerServlet() {
         System.out.println("Customer Servlet Constructor Invoked");

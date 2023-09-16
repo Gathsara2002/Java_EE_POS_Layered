@@ -1,5 +1,7 @@
 package lk.ijse.pos.servlet;
 
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.bo.custom.impl.ItemBOImpl;
 import lk.ijse.pos.dto.ItemDTO;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 @WebServlet(urlPatterns = {"/item"})
 public class ItemServlet extends HttpServlet {
 
-    ItemBO itemBO = new ItemBOImpl();
+    ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ITEM);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -95,7 +97,7 @@ public class ItemServlet extends HttpServlet {
             pstm.setObject(3, itemQty);
             pstm.setObject(4, unitPrice);
 */
-            ItemDTO itemDTO = new ItemDTO(code,description,itemQty,unitPrice);
+            ItemDTO itemDTO = new ItemDTO(code, description, itemQty, unitPrice);
             boolean isItemSaved = itemBO.saveItem(itemDTO, connection);
 
             if (isItemSaved) {
@@ -133,9 +135,9 @@ public class ItemServlet extends HttpServlet {
             pstm.setObject(2, itemQty);
             pstm.setObject(3, unitPrice);
 */
-            ItemDTO itemDTO = new ItemDTO(code,description,itemQty,unitPrice);
+            ItemDTO itemDTO = new ItemDTO(code, description, itemQty, unitPrice);
 
-            boolean isItemUpdated = itemBO.updateItem(itemDTO,connection);
+            boolean isItemUpdated = itemBO.updateItem(itemDTO, connection);
 
             if (isItemUpdated) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Item Updated..!"));
