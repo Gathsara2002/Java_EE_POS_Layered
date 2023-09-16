@@ -97,6 +97,8 @@ public class PurchaseOrderServlet extends HttpServlet {
                 throw new SQLException("Order Not added.!");
             }
 
+            System.out.println("order saved");
+
             //save orderDetail
             JsonArray orderDetails = orderJsonOb.getJsonArray("orderDetails");
             for (JsonValue orderDetail : orderDetails) {
@@ -121,6 +123,8 @@ public class PurchaseOrderServlet extends HttpServlet {
                     throw new SQLException("Order Details Not added.!");
                 }
 
+                System.out.println("order detail saved");
+
                 //update the item also
                /* PreparedStatement pstm3 = connection.prepareStatement("update Item set qtyOnHand=? where code=?");
                 pstm3.setObject(2, itemCode);
@@ -140,6 +144,8 @@ public class PurchaseOrderServlet extends HttpServlet {
                     throw new SQLException("Item cannot be updated");
                 }
             }
+            System.out.println("item updated");
+
             connection.commit();
             connection.setAutoCommit(true);
             resp.getWriter().print(ResponseUtil.genJson("Success", "Successfully Added.!"));
