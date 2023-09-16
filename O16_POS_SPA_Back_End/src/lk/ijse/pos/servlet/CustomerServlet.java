@@ -1,6 +1,8 @@
 package lk.ijse.pos.servlet;
 
 
+import lk.ijse.pos.bo.custom.impl.CustomerBOImpl;
+import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -13,10 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 
 @WebServlet(urlPatterns = {"/customer"})
 public class CustomerServlet extends HttpServlet {
+
+    CustomerBOImpl customerBO = new CustomerBOImpl();
 
     public CustomerServlet() {
         System.out.println("Customer Servlet Constructor Invoked");
@@ -28,7 +33,7 @@ public class CustomerServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         BasicDataSource dbcp = (BasicDataSource) servletContext.getAttribute("dbcp");
 
-        try (Connection connection = dbcp.getConnection()) {
+      /*  try (Connection connection = dbcp.getConnection()) {
             PreparedStatement pstm = connection.prepareStatement("select * from Customer");
             ResultSet rst = pstm.executeQuery();
 
@@ -51,6 +56,34 @@ public class CustomerServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        }*/
+
+        try (Connection connection = dbcp.getConnection()) {
+            ArrayList<CustomerDTO> customers = customerBO.getAllCustomers(connection);
+
+            JsonArrayBuilder allCustomers = Json.createArrayBuilder();
+
+            for (CustomerDTO customer : customers) {
+                String id = customer.getId();
+                String name = customer.getName();
+                String address = customer.getAddress();
+                String salary = customer.getSalary();
+
+                JsonObjectBuilder customerObject = Json.createObjectBuilder();
+                customerObject.add("id", id);
+                customerObject.add("name", name);
+                customerObject.add("address", address);
+                customerObject.add("salary", salary);
+                allCustomers.add(customerObject.build());
+            }
+
+            resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allCustomers.build()));
+
+        } catch (SQLException e) {
+            resp.setStatus(500);
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

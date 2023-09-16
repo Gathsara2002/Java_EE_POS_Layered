@@ -6,15 +6,32 @@
 package lk.ijse.pos.bo.custom.impl;
 
 import lk.ijse.pos.bo.custom.CustomerBO;
+import lk.ijse.pos.dao.custom.impl.CustomerDAOImpl;
 import lk.ijse.pos.dto.CustomerDTO;
+import lk.ijse.pos.entity.CustomerEntity;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerBOImpl implements CustomerBO {
+
+    CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
     @Override
-    public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
-        return null;
+    public ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException, ClassNotFoundException {
+
+        ArrayList<CustomerDTO> allCustomers = new ArrayList();
+
+        ArrayList<CustomerEntity> all = customerDAO.getAll(connection);
+        for (CustomerEntity entity : all) {
+            String id = entity.getId();
+            String name = entity.getName();
+            String address = entity.getAddress();
+            String salary = entity.getSalary();
+            allCustomers.add(new CustomerDTO(id, name, address, salary));
+        }
+        return allCustomers;
     }
 
     @Override
