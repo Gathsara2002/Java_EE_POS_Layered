@@ -35,8 +35,15 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean save(CustomerDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean save(CustomerDTO dto, Connection connection) throws SQLException, ClassNotFoundException {
+
+        String id = dto.getId();
+        String name = dto.getName();
+        String address = dto.getAddress();
+        String salary = dto.getSalary();
+        CustomerEntity customerEntity = new CustomerEntity(id, name, address, salary);
+
+        return customerDAO.save(customerEntity, connection);
     }
 
     @Override

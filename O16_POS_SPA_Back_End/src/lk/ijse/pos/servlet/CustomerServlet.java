@@ -99,20 +99,25 @@ public class CustomerServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("insert into Customer values(?,?,?,?)");
+           /* PreparedStatement pstm = connection.prepareStatement("insert into Customer values(?,?,?,?)");
             pstm.setObject(1, cusID);
             pstm.setObject(2, cusName);
             pstm.setObject(3, cusAddress);
-            pstm.setObject(4, cusSalary);
+            pstm.setObject(4, cusSalary);*/
 
-            if (pstm.executeUpdate() > 0) {
+            CustomerDTO customerDTO = new CustomerDTO(cusID, cusName, cusAddress, cusSalary);
+
+            boolean isCustomerSaved = customerBO.save(customerDTO, connection);
+
+            if (isCustomerSaved) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Successfully Added.!"));
             }
 
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

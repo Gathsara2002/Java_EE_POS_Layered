@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public interface CustomerBO {
     ArrayList<CustomerDTO> getAllCustomers(Connection connection) throws SQLException, ClassNotFoundException;
 
-    boolean save(CustomerDTO dto) throws SQLException, ClassNotFoundException;
+    boolean save(CustomerDTO dto,Connection connection) throws SQLException, ClassNotFoundException;
 
     boolean updateCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
 
