@@ -90,8 +90,6 @@ function saveCustomer() {
                 alert(error.responseJSON.message);
             }
         });
-
-
     } else {
         alert("Customer already exits.!");
         clearCustomerInputFields();
@@ -211,7 +209,6 @@ function updateCustomer(id) {
             });
         }
     }
-
 }
 
 

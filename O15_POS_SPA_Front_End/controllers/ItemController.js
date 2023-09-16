@@ -63,12 +63,11 @@ $("#btn-clear").click(function () {
 });
 
 
-
 // CRUD operation Functions
 function saveItem() {
     let itemCode = $("#itemCode").val();
     //check item is exists or not?
-    if (searchItem(itemCode.trim()) == undefined) {
+    if (searchItem(itemCode.trim())) {
 
         //if the customer is not available then add him to the array
         let itemFormData = $("#itemForm").serialize();
@@ -88,10 +87,6 @@ function saveItem() {
                 alert(error.responseJSON.message);
             }
         });
-
-
-
-
     } else {
         alert("Item already exits.!");
         clearItemInputFields();
@@ -127,8 +122,6 @@ function getAllItems() {
     });
 }
 
-
-
 function deleteItem(code) {
     $.ajax({
         url: BASE_URL + 'item?code=' + code,
@@ -150,17 +143,20 @@ function deleteItem(code) {
 }
 
 function searchItem(code) {
-    let resp = false;
+    let resp = true;
     $.ajax({
         url: BASE_URL + 'item',
         dataType: "json",
         async: false,
         success: function (response) {
             let items = response.data;
-            resp = items.find(function (item) {
+            resp=items.find(function (item) {
                 //if the search id match with customer record
                 //then return that object
-                return item.code == code;
+                if(item.code === code){
+                    resp=false;
+                    return resp;
+                }
             });
 
         },
@@ -178,7 +174,7 @@ function updateItem(code) {
     } else {
         let consent = confirm("Do you really want to update this Item.?");
         if (consent) {
-            let item = searchItem(code);
+            let item = searchItem(code)[0];
             //if the item available can we update.?
 
             let itemName = $("#itemName").val();
@@ -206,10 +202,8 @@ function updateItem(code) {
                     alert(error.responseJSON.message);
                 }
             });
-
         }
     }
-
 }
 
 function clearItemInputFields() {
