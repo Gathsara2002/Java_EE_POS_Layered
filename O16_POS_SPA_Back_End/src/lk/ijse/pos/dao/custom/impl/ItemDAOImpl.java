@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ItemDAOImpl implements ItemDAO {
     @Override
     public ArrayList<ItemEntity> getAll(Connection connection) throws SQLException, ClassNotFoundException {
-        PreparedStatement pstm = connection.prepareStatement("select * from Item");
+        PreparedStatement pstm = connection.prepareStatement("select * from item");
         ResultSet rst = pstm.executeQuery();
 
         ArrayList<ItemEntity> item = new ArrayList<>();
@@ -37,18 +37,24 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public boolean save(ItemEntity entity, Connection connection) throws SQLException, ClassNotFoundException {
-          PreparedStatement pstm = connection.prepareStatement("insert into Item values(?,?,?,?)");
+          PreparedStatement pstm = connection.prepareStatement("insert into item values(?,?,?,?)");
             pstm.setObject(1, entity.getCode());
             pstm.setObject(2, entity.getName());
             pstm.setObject(3, entity.getQty());
-            pstm.setObject(4, entity.getQty());
+            pstm.setObject(4, entity.getPrice());
 
             return pstm.executeUpdate()>0;
     }
 
     @Override
     public boolean update(ItemEntity entity, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+         PreparedStatement pstm = connection.prepareStatement("update item set name =?,qty=?,price=? where code=?");
+            pstm.setObject(4, entity.getCode());
+            pstm.setObject(1, entity.getName());
+            pstm.setObject(2, entity.getQty());
+            pstm.setObject(3, entity.getPrice());
+
+            return pstm.executeUpdate()>0;
     }
 
     @Override

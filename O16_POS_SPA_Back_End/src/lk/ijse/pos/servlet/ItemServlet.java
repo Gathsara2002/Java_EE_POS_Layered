@@ -127,13 +127,17 @@ public class ItemServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("update Item set description=?,qtyOnHand=?,unitPrice=? where code=?");
+           /* PreparedStatement pstm = connection.prepareStatement("update Item set description=?,qtyOnHand=?,unitPrice=? where code=?");
             pstm.setObject(4, code);
             pstm.setObject(1, description);
             pstm.setObject(2, itemQty);
             pstm.setObject(3, unitPrice);
+*/
+            ItemDTO itemDTO = new ItemDTO(code,description,itemQty,unitPrice);
 
-            if (pstm.executeUpdate() > 0) {
+            boolean isItemUpdated = itemBO.updateItem(itemDTO,connection);
+
+            if (isItemUpdated) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Item Updated..!"));
             } else {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Item Updated Failed..!"));
@@ -141,6 +145,8 @@ public class ItemServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
 
