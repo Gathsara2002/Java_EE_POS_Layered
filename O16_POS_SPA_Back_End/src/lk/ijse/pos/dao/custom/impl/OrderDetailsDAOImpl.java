@@ -22,12 +22,12 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
     @Override
     public boolean save(OrderDetailsEntity entity, Connection connection) throws SQLException, ClassNotFoundException {
         PreparedStatement pstm = connection.prepareStatement("insert into OrderDetails values(?,?,?,?)");
-                pstm.setObject(1, entity.getOrderId());
-                pstm.setObject(2, entity.getItemCode());
-                pstm.setObject(3, entity.getQty());
-                pstm.setObject(4, entity.getUnitPrice());
+        pstm.setObject(1, entity.getOrderId());
+        pstm.setObject(2, entity.getItemCode());
+        pstm.setObject(3, entity.getQty());
+        pstm.setObject(4, entity.getUnitPrice());
 
-                return pstm.executeUpdate()>0;
+        return pstm.executeUpdate() > 0;
     }
 
     @Override

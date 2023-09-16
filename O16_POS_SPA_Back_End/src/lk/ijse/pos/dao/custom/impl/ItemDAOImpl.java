@@ -6,7 +6,6 @@
 package lk.ijse.pos.dao.custom.impl;
 
 import lk.ijse.pos.dao.custom.ItemDAO;
-import lk.ijse.pos.entity.CustomerEntity;
 import lk.ijse.pos.entity.ItemEntity;
 
 import java.sql.Connection;
@@ -69,9 +68,9 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public boolean updateItemQty(int qty, String code, Connection connection) throws SQLException, ClassNotFoundException {
         PreparedStatement pstm = connection.prepareStatement("update item set qty=? where code=?");
-                pstm.setObject(2, code);
-                pstm.setObject(1, qty);
+        pstm.setObject(2, code);
+        pstm.setObject(1, qty);
 
-                return pstm.executeUpdate()>0;
+        return pstm.executeUpdate() > 0;
     }
 }

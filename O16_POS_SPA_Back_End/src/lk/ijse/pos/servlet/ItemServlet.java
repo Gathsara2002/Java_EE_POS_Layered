@@ -1,9 +1,7 @@
 package lk.ijse.pos.servlet;
 
 import lk.ijse.pos.bo.BOFactory;
-import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.ItemBO;
-import lk.ijse.pos.bo.custom.impl.ItemBOImpl;
 import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -150,8 +148,6 @@ public class ItemServlet extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -180,5 +176,4 @@ public class ItemServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }

@@ -3,7 +3,6 @@ package lk.ijse.pos.servlet;
 
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.CustomerBO;
-import lk.ijse.pos.bo.custom.impl.CustomerBOImpl;
 import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -186,5 +185,4 @@ public class CustomerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }

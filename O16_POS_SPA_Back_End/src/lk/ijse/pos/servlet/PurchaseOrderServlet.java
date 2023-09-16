@@ -88,7 +88,7 @@ public class PurchaseOrderServlet extends HttpServlet {
             pstm.setObject(2, date);
             pstm.setObject(3, cusID);*/
 
-            OrderDTO orderDTO = new OrderDTO(oid,date,cusID);
+            OrderDTO orderDTO = new OrderDTO(oid, date, cusID);
             boolean isOrderSaved = placeOrderBO.saveOrder(orderDTO, connection);
 
             if (!isOrderSaved) {
@@ -96,8 +96,6 @@ public class PurchaseOrderServlet extends HttpServlet {
                 connection.setAutoCommit(true);
                 throw new SQLException("Order Not added.!");
             }
-
-            System.out.println("order saved");
 
             //save orderDetail
             JsonArray orderDetails = orderJsonOb.getJsonArray("orderDetails");
@@ -114,7 +112,7 @@ public class PurchaseOrderServlet extends HttpServlet {
                 pstm2.setObject(3, qty);
                 pstm2.setObject(4, unitPrice);*/
 
-                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(oid,itemCode,qty,unitPrice);
+                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(oid, itemCode, qty, unitPrice);
                 boolean isOrderDetailSaved = placeOrderBO.saveOrderDetail(orderDetailsDTO, connection);
 
                 if (!isOrderDetailSaved) {
@@ -122,8 +120,6 @@ public class PurchaseOrderServlet extends HttpServlet {
                     connection.setAutoCommit(true);
                     throw new SQLException("Order Details Not added.!");
                 }
-
-                System.out.println("order detail saved");
 
                 //update the item also
                /* PreparedStatement pstm3 = connection.prepareStatement("update Item set qtyOnHand=? where code=?");
@@ -134,9 +130,9 @@ public class PurchaseOrderServlet extends HttpServlet {
 
                 int availableQty = Integer.parseInt(avQty);
                 int purchasingQty = Integer.parseInt(qty);
-                int nowQty=availableQty-purchasingQty;
+                int nowQty = availableQty - purchasingQty;
 
-                boolean isItemQtyUpdated = placeOrderBO.UpdateItemQty(nowQty,itemCode,connection);
+                boolean isItemQtyUpdated = placeOrderBO.UpdateItemQty(nowQty, itemCode, connection);
 
                 if (!isItemQtyUpdated) {
                     connection.rollback();
@@ -144,7 +140,6 @@ public class PurchaseOrderServlet extends HttpServlet {
                     throw new SQLException("Item cannot be updated");
                 }
             }
-            System.out.println("item updated");
 
             connection.commit();
             connection.setAutoCommit(true);
@@ -157,6 +152,4 @@ public class PurchaseOrderServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-
 }
