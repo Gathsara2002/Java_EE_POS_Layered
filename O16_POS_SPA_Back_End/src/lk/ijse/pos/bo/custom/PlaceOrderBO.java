@@ -9,18 +9,19 @@ import lk.ijse.pos.bo.SuperBO;
 import lk.ijse.pos.dto.OrderDTO;
 import lk.ijse.pos.dto.OrderDetailsDTO;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface PlaceOrderBO extends SuperBO {
-    ArrayList<OrderDTO> getAllOrders() throws SQLException, ClassNotFoundException;
+    ArrayList<OrderDTO> getAllOrders(Connection connection) throws SQLException, ClassNotFoundException;
 
-    boolean saveOrder(OrderDTO dto) throws SQLException, ClassNotFoundException;
+    boolean saveOrder(OrderDTO dto, Connection connection) throws SQLException, ClassNotFoundException;
 
-    ArrayList<OrderDetailsDTO> getAllOrderDetails() throws SQLException, ClassNotFoundException;
+    ArrayList<OrderDetailsDTO> getAllOrderDetails(Connection connection) throws SQLException, ClassNotFoundException;
 
-    boolean saveOrderDetail(OrderDetailsDTO dto) throws SQLException, ClassNotFoundException;
+    boolean saveOrderDetail(OrderDetailsDTO dto, Connection connection) throws SQLException, ClassNotFoundException;
 
-    boolean UpdateItemQty(int qty, String code) throws SQLException, ClassNotFoundException;
+    boolean UpdateItemQty(int qty, String code, Connection connection) throws SQLException, ClassNotFoundException;
 
 }

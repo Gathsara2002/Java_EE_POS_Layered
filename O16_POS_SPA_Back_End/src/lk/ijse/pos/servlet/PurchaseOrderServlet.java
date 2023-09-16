@@ -2,6 +2,7 @@ package lk.ijse.pos.servlet;
 
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.PlaceOrderBO;
+import lk.ijse.pos.dto.OrderDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -19,7 +20,7 @@ import java.sql.*;
 @WebServlet(urlPatterns = {"/purchase_order"})
 public class PurchaseOrderServlet extends HttpServlet {
 
-    private final PlaceOrderBO placeOrderBO=(PlaceOrderBO)BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PLACE_ORDER);
+    private final PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PLACE_ORDER);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -80,12 +81,15 @@ public class PurchaseOrderServlet extends HttpServlet {
         try (Connection connection = dbcp.getConnection()) {
             connection.setAutoCommit(false);
 
-            PreparedStatement pstm = connection.prepareStatement("insert into Orders values(?,?,?)");
+           /* PreparedStatement pstm = connection.prepareStatement("insert into Orders values(?,?,?)");
             pstm.setObject(1, oid);
             pstm.setObject(2, date);
-            pstm.setObject(3, cusID);
+            pstm.setObject(3, cusID);*/
 
-            if (!(pstm.executeUpdate() > 0)) {
+            OrderDTO orderDTO = new OrderDTO(oid,date,cusID);
+            boolean isOrderSaved = placeOrderBO.saveOrder(orderDTO, connection);
+
+            if (!isOrderSaved) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 throw new SQLException("Order Not added.!");
@@ -131,6 +135,8 @@ public class PurchaseOrderServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
