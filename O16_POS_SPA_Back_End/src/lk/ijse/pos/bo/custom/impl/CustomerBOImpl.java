@@ -53,7 +53,7 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean deleteCustomer(String id,Connection connection) throws SQLException, ClassNotFoundException {
+        return customerDAO.delete(id,connection);
     }
 }

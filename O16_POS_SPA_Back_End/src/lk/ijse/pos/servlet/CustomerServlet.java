@@ -142,9 +142,9 @@ public class CustomerServlet extends HttpServlet {
             pstm.setObject(2, cusAddress);
             pstm.setObject(3, salary); */
 
-            CustomerDTO customerDTO = new CustomerDTO(cusID,cusName,cusAddress,salary);
+            CustomerDTO customerDTO = new CustomerDTO(cusID, cusName, cusAddress, salary);
 
-            boolean isCustomerUpdated = customerBO.updateCustomer(customerDTO,connection);
+            boolean isCustomerUpdated = customerBO.updateCustomer(customerDTO, connection);
             if (isCustomerUpdated) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Customer Updated..!"));
             } else {
@@ -167,10 +167,12 @@ public class CustomerServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("delete from Customer where id=?");
-            pstm.setObject(1, cusID);
+           /* PreparedStatement pstm = connection.prepareStatement("delete from Customer where id=?");
+            pstm.setObject(1, cusID);*/
 
-            if (pstm.executeUpdate() > 0) {
+            boolean isCustomerDeleted = customerBO.deleteCustomer(cusID, connection);
+
+            if (isCustomerDeleted) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Customer Deleted..!"));
             } else {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer Delete Failed..!"));
@@ -178,6 +180,8 @@ public class CustomerServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

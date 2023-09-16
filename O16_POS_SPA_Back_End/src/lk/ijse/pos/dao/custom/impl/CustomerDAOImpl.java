@@ -58,8 +58,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean delete(String id, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+        PreparedStatement pstm = connection.prepareStatement("delete from Customer where id=?");
+        pstm.setObject(1, id);
+
+        return pstm.executeUpdate() > 0;
     }
-
-
 }
