@@ -38,7 +38,8 @@ public class ItemBOImpl implements ItemBO {
 
     @Override
     public boolean saveItem(ItemDTO dto, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+        ItemEntity entity = new ItemEntity(dto.getCode(), dto.getName(), dto.getQty(), dto.getPrice());
+        return itemDAO.save(entity, connection);
     }
 
     @Override

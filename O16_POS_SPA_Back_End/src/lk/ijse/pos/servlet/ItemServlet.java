@@ -89,13 +89,16 @@ public class ItemServlet extends HttpServlet {
 
         try (Connection connection = dbcp.getConnection()) {
 
-            PreparedStatement pstm = connection.prepareStatement("insert into Item values(?,?,?,?)");
+           /* PreparedStatement pstm = connection.prepareStatement("insert into Item values(?,?,?,?)");
             pstm.setObject(1, code);
             pstm.setObject(2, description);
             pstm.setObject(3, itemQty);
             pstm.setObject(4, unitPrice);
+*/
+            ItemDTO itemDTO = new ItemDTO(code,description,itemQty,unitPrice);
+            boolean isItemSaved = itemBO.saveItem(itemDTO, connection);
 
-            if (pstm.executeUpdate() > 0) {
+            if (isItemSaved) {
                 resp.getWriter().print(ResponseUtil.genJson("Success", "Successfully Added.!"));
             }
 
@@ -103,6 +106,8 @@ public class ItemServlet extends HttpServlet {
             resp.setStatus(500);
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
 
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
