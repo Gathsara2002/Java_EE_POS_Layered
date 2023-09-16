@@ -3,6 +3,7 @@ package lk.ijse.pos.servlet;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.PlaceOrderBO;
 import lk.ijse.pos.dto.OrderDTO;
+import lk.ijse.pos.dto.OrderDetailsDTO;
 import lk.ijse.pos.servlet.util.ResponseUtil;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -103,13 +104,16 @@ public class PurchaseOrderServlet extends HttpServlet {
                 String avQty = odObject.getString("avQty");
                 String unitPrice = odObject.getString("price");
 
-                PreparedStatement pstm2 = connection.prepareStatement("insert into OrderDetails values(?,?,?,?)");
+                /*PreparedStatement pstm2 = connection.prepareStatement("insert into OrderDetails values(?,?,?,?)");
                 pstm2.setObject(1, oid);
                 pstm2.setObject(2, itemCode);
                 pstm2.setObject(3, qty);
-                pstm2.setObject(4, unitPrice);
+                pstm2.setObject(4, unitPrice);*/
 
-                if (!(pstm2.executeUpdate() > 0)) {
+                OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(oid,itemCode,qty,unitPrice);
+                boolean isOrderDetailSaved = placeOrderBO.saveOrderDetail(orderDetailsDTO, connection);
+
+                if (!isOrderDetailSaved) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     throw new SQLException("Order Details Not added.!");

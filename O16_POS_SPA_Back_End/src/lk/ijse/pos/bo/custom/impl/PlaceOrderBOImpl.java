@@ -12,6 +12,7 @@ import lk.ijse.pos.dao.custom.OrderDAO;
 import lk.ijse.pos.dao.custom.OrderDetailsDAO;
 import lk.ijse.pos.dto.OrderDTO;
 import lk.ijse.pos.dto.OrderDetailsDTO;
+import lk.ijse.pos.entity.OrderDetailsEntity;
 import lk.ijse.pos.entity.OrderEntity;
 
 import java.sql.Connection;
@@ -31,8 +32,8 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
 
     @Override
     public boolean saveOrder(OrderDTO dto, Connection connection) throws SQLException, ClassNotFoundException {
-        OrderEntity entity=new OrderEntity(dto.getOrderId(),dto.getDate(),dto.getCusId());
-       return orderDAO.save(entity,connection);
+        OrderEntity entity = new OrderEntity(dto.getOrderId(), dto.getDate(), dto.getCusId());
+        return orderDAO.save(entity, connection);
     }
 
     @Override
@@ -42,7 +43,8 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
 
     @Override
     public boolean saveOrderDetail(OrderDetailsDTO dto, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+        OrderDetailsEntity entity = new OrderDetailsEntity(dto.getOrderId(), dto.getItemCode(), dto.getQty(), dto.getUnitPrice());
+        return orderDetailsDAO.save(entity, connection);
     }
 
     @Override
