@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class OderDAOImpl implements OrderDAO {
+public class OrderDAOImpl implements OrderDAO {
     @Override
     public ArrayList<OrderEntity> getAll(Connection connection) throws SQLException, ClassNotFoundException {
         return null;

@@ -7,6 +7,7 @@ package lk.ijse.pos.bo;
 
 import lk.ijse.pos.bo.custom.impl.CustomerBOImpl;
 import lk.ijse.pos.bo.custom.impl.ItemBOImpl;
+import lk.ijse.pos.bo.custom.impl.PlaceOrderBOImpl;
 
 public class BOFactory {
     private static BOFactory boFactory;
@@ -19,7 +20,7 @@ public class BOFactory {
     }
 
     public enum BOTypes {
-        CUSTOMER, ITEM, ORDER, ORDER_DETAILS
+        CUSTOMER, ITEM, PLACE_ORDER
     }
 
     public SuperBO getBO(BOTypes types) {
@@ -28,13 +29,10 @@ public class BOFactory {
                 return new CustomerBOImpl();
             case ITEM:
                 return new ItemBOImpl();
-            /*case ORDER:
-                return new OrderBOImpl();
-            case ORDER_DETAILS:
-                return new OrderDetailsBOImpl();*/
+            case PLACE_ORDER:
+                return new PlaceOrderBOImpl();
             default:
                 return null;
         }
     }
-
 }
