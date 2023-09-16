@@ -71,6 +71,7 @@ public class PurchaseOrderServlet extends HttpServlet {
         //get order and order details
         //so here we have to use json data because to purchase an order we need a series of data
 
+        //save order
         JsonReader reader = Json.createReader(req.getReader());
         JsonObject orderJsonOb = reader.readObject();
         String oid = orderJsonOb.getString("oid");
@@ -96,6 +97,7 @@ public class PurchaseOrderServlet extends HttpServlet {
                 throw new SQLException("Order Not added.!");
             }
 
+            //save orderDetail
             JsonArray orderDetails = orderJsonOb.getJsonArray("orderDetails");
             for (JsonValue orderDetail : orderDetails) {
                 JsonObject odObject = orderDetail.asJsonObject();
@@ -120,13 +122,19 @@ public class PurchaseOrderServlet extends HttpServlet {
                 }
 
                 //update the item also
-                PreparedStatement pstm3 = connection.prepareStatement("update Item set qtyOnHand=? where code=?");
+               /* PreparedStatement pstm3 = connection.prepareStatement("update Item set qtyOnHand=? where code=?");
                 pstm3.setObject(2, itemCode);
                 int availableQty = Integer.parseInt(avQty);
                 int purchasingQty = Integer.parseInt(qty);
-                pstm3.setObject(1, (availableQty - purchasingQty));
+                pstm3.setObject(1, (availableQty - purchasingQty));*/
 
-                if (!(pstm3.executeUpdate() > 0)) {
+                int availableQty = Integer.parseInt(avQty);
+                int purchasingQty = Integer.parseInt(qty);
+                int nowQty=availableQty-purchasingQty;
+
+                boolean isItemQtyUpdated = placeOrderBO.UpdateItemQty(nowQty,itemCode,connection);
+
+                if (!isItemQtyUpdated) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     throw new SQLException("Item cannot be updated");

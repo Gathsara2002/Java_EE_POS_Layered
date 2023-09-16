@@ -29,7 +29,7 @@ public class ItemDAOImpl implements ItemDAO {
             String qty = rst.getString(3);
             String unitPrice = rst.getString(4);
 
-            item.add(new ItemEntity(code,description,qty,unitPrice));
+            item.add(new ItemEntity(code, description, qty, unitPrice));
         }
 
         return item;
@@ -37,37 +37,41 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public boolean save(ItemEntity entity, Connection connection) throws SQLException, ClassNotFoundException {
-          PreparedStatement pstm = connection.prepareStatement("insert into item values(?,?,?,?)");
-            pstm.setObject(1, entity.getCode());
-            pstm.setObject(2, entity.getName());
-            pstm.setObject(3, entity.getQty());
-            pstm.setObject(4, entity.getPrice());
+        PreparedStatement pstm = connection.prepareStatement("insert into item values(?,?,?,?)");
+        pstm.setObject(1, entity.getCode());
+        pstm.setObject(2, entity.getName());
+        pstm.setObject(3, entity.getQty());
+        pstm.setObject(4, entity.getPrice());
 
-            return pstm.executeUpdate()>0;
+        return pstm.executeUpdate() > 0;
     }
 
     @Override
     public boolean update(ItemEntity entity, Connection connection) throws SQLException, ClassNotFoundException {
-         PreparedStatement pstm = connection.prepareStatement("update item set name =?,qty=?,price=? where code=?");
-            pstm.setObject(4, entity.getCode());
-            pstm.setObject(1, entity.getName());
-            pstm.setObject(2, entity.getQty());
-            pstm.setObject(3, entity.getPrice());
+        PreparedStatement pstm = connection.prepareStatement("update item set name =?,qty=?,price=? where code=?");
+        pstm.setObject(4, entity.getCode());
+        pstm.setObject(1, entity.getName());
+        pstm.setObject(2, entity.getQty());
+        pstm.setObject(3, entity.getPrice());
 
-            return pstm.executeUpdate()>0;
+        return pstm.executeUpdate() > 0;
     }
 
     @Override
     public boolean delete(String id, Connection connection) throws SQLException, ClassNotFoundException {
-       PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
-            pstm.setObject(1, id);
+        PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
+        pstm.setObject(1, id);
 
-            return pstm.executeUpdate()>0;
+        return pstm.executeUpdate() > 0;
 
     }
 
     @Override
-    public boolean updateItemQty(int qty, String code) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean updateItemQty(int qty, String code, Connection connection) throws SQLException, ClassNotFoundException {
+        PreparedStatement pstm = connection.prepareStatement("update Item set qtyOnHand=? where code=?");
+                pstm.setObject(2, code);
+                pstm.setObject(1, qty);
+
+                return pstm.executeUpdate()>0;
     }
 }

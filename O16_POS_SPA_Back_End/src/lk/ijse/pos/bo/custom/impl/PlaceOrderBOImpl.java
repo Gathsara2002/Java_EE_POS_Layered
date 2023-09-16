@@ -49,6 +49,6 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
 
     @Override
     public boolean UpdateItemQty(int qty, String code, Connection connection) throws SQLException, ClassNotFoundException {
-        return false;
+        return itemDAO.updateItemQty(qty,code,connection);
     }
 }
